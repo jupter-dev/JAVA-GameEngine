@@ -42,15 +42,7 @@ public class Player extends Entity{
         if(input.down.down) y+=speed;
         if(input.right.down) x+=speed;
         if(input.left.down)x-=speed;
-          
-        
-      
-       
-            
         camera();
-        
-        
-
         frames++;
         if(frames == maxFrames){
             frames = 0;
