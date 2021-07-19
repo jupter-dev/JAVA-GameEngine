@@ -1,0 +1,7 @@
+{
+    "discord.enabled": true,
+    "java.project.sourcePaths": [
+        "src",
+        "res"
+    ]
+}

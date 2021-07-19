@@ -1,0 +1,67 @@
+- Gameloop - OK
+- Sprite teste - OK
+- Movimentação - OK
+- Blocos
+- Colisão
+- Camera - OK
+- Interações
+- I.A do inimigo (De momento só seguir)
+
+Boss names:
+ --Cappueyes (Cor de cappucino com vários olhos)
+
+
+
+ 
+
+
+
+
+
+
+ Suavidade pra trás:
+ 
+        if(Camera.x > xs){
+            camFrames++;
+            if(camFrames ==  1){
+                camFrames = 0;
+                if(Camera.x - xs < 50){
+                    Camera.x-=1;
+                }else{
+                    Camera.x-=speed;
+                }
+            }
+        }else if(Camera.x < xs){
+            camFrames++;
+            if(camFrames ==  1){
+                camFrames = 0;
+                if(xs - Camera.x < 50){
+                    Camera.x+=1;
+                }else{
+                    Camera.x+=speed;
+                }   
+            }
+        }
+
+        if(Camera.y > ys){
+            camFrames++;
+            if(camFrames ==  1){
+                camFrames = 0;
+                if(Camera.y -ys < 40){
+                    Camera.y-=1;
+                }else{
+                    Camera.y-=speed;
+                }
+            }
+        }else if(Camera.y < ys){
+            camFrames++;
+            if(camFrames ==  1){
+                camFrames = 0;
+                if(ys - Camera.y < 40){
+                    Camera.y+=1;
+                }else{
+                    Camera.y+=speed;
+                }
+            }
+        }
+    
