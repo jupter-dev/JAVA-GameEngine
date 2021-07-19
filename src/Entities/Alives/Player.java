@@ -35,8 +35,6 @@ public class Player extends Entity{
     }
 
 
-
-
     public void tick(){
         if(input.up.down) y-=speed;
         if(input.down.down) y+=speed;
@@ -52,6 +50,15 @@ public class Player extends Entity{
             }
         }
     }
+
+    public void render(Graphics g){
+        if(side == "R"){
+            g.drawImage(ARight[index], this.getX() - Camera.x, this.getY() - Camera.y, null);
+        }else{
+            g.drawImage(ALeft[index],  this.getX() - Camera.x, this.getY() - Camera.y, null);
+        }
+    }
+
 
     public void camera(){
               
@@ -109,14 +116,6 @@ public class Player extends Entity{
         }else{
             Camera.y = Camera.limit(Camera.y, World.HEIGHT*32 - App.HEIGHT);
             Camera.x = Camera.limit(Camera.x, World.WIDTH*32 - App.WIDTH);
-        }
-    }
-
-    public void render(Graphics g){
-        if(side == "R"){
-            g.drawImage(ARight[index], this.getX() - Camera.x, this.getY() - Camera.y, null);
-        }else{
-            g.drawImage(ALeft[index],  this.getX() - Camera.x, this.getY() - Camera.y, null);
         }
     }
 
