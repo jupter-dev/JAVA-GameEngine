@@ -79,7 +79,6 @@ public class Player extends Entity{
                 }   
             }
         }
-
         if(Camera.y > ys){
             camFrames++;
             if(camFrames ==  1){
@@ -101,7 +100,6 @@ public class Player extends Entity{
                 }
             }
         }
-        
         //Pega a posição do personagem o tamanho da tela
         //Subtrair a posição do personagem com a metade da tela, somando a metade da sprite
         if(camTime == 0){
