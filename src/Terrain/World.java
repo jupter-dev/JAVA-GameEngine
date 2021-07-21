@@ -15,8 +15,9 @@ import java.awt.Graphics;
 
 public class World {
 
-    private Tile[] tiles;
+    public static Tile[] tiles;
     public static int WIDTH, HEIGHT;
+    public static final int TILE_SIZE = 32;
 
     public World(String path){
         try {
@@ -40,7 +41,7 @@ public class World {
 
                     int currentPixel = pixeis[mx+(my*map.getWidth())];
 
-                    int pos = mx + (my * WIDTH), tx = mx*32, ty = my*32;
+                    int pos = mx + (my * WIDTH), tx = mx*TILE_SIZE, ty = my*TILE_SIZE;
 
                     tiles[pos] = new Floor(tx, ty, Tile.TILE_GRASS);
 
@@ -53,10 +54,12 @@ public class World {
                        App.player.setY(ty);
                     }else if(currentPixel == 0xFFFF0000){
                         //Inimigo
-                        App.entities.add(new Enemy(tx, ty, 32, 32, Entity.ENEMY));
+                        Enemy enemy = new Enemy(tx, ty, TILE_SIZE, TILE_SIZE, Entity.ENEMY);
+                        App.enemies.add(enemy);
+                        App.entities.add(enemy);
                     }else if(currentPixel == 0xFF00FF00){
                         //GEM
-                        App.entities.add(new Gem(tx, ty, 32, 32, Entity.GEMS));
+                        App.entities.add(new Gem(tx, ty, TILE_SIZE, TILE_SIZE, Entity.GEMS));
                     }
                 }
             }
@@ -65,10 +68,61 @@ public class World {
         }
     }
 
+
+    public static boolean freeWay(int ox, int oy){
+        // Pegar bloco futuro
+        int yrt = (oy + TILE_SIZE - 8) / TILE_SIZE;
+        int ylt = (oy + TILE_SIZE - 8) / TILE_SIZE;
+
+        int xlt = (ox + TILE_SIZE - 10) / TILE_SIZE;
+        int xlb = (ox + TILE_SIZE - 10) / TILE_SIZE;
+        
+        int xrt = (ox+9) / TILE_SIZE;
+        int xrb = (ox+9) / TILE_SIZE;
+        
+        int yrb = (oy+8) / TILE_SIZE;
+        int ylb = (oy+8) / TILE_SIZE;
+
+
+        return !(tiles[xrb + (yrb*World.WIDTH)] instanceof Wall ||
+                 tiles[xlb + (ylb*World.WIDTH)] instanceof Wall ||
+                 tiles[xrt + (yrt*World.WIDTH)] instanceof Wall ||
+                 tiles[xlt + (ylt*World.WIDTH)] instanceof Wall
+        );
+    }
+
+    public static boolean freeWayIA(int ox, int oy){
+        // Pegar bloco futuro
+        int yrt = (oy + TILE_SIZE - 1) / TILE_SIZE;
+        int ylt = (oy + TILE_SIZE - 1) / TILE_SIZE;
+
+        int xlt = (ox + TILE_SIZE - 1) / TILE_SIZE;
+        int xlb = (ox + TILE_SIZE - 1) / TILE_SIZE;
+        
+        int xrt = (ox) / TILE_SIZE;
+        int xrb = (ox) / TILE_SIZE;
+        
+        int yrb = (oy) / TILE_SIZE;
+        int ylb = (oy) / TILE_SIZE;
+
+
+        return !(tiles[xrb + (yrb*World.WIDTH)] instanceof Wall ||
+                 tiles[xlb + (ylb*World.WIDTH)] instanceof Wall ||
+                 tiles[xrt + (yrt*World.WIDTH)] instanceof Wall ||
+                 tiles[xlt + (ylt*World.WIDTH)] instanceof Wall
+        );
+    }
+
+
+
+
+
+
+
     public void render(Graphics g){
         int xs = Camera.x  >> 5;
         int ys = Camera.y >> 5;
-        int xf = xs + (App.WIDTH >> 4);
+        int xf = xs + (App.WIDTH >> 4 );
         int yf = ys + (App.HEIGHT >> 4);
 
         for(int mx = xs; mx < xf; mx++){

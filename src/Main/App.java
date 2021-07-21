@@ -2,6 +2,7 @@ package Main;
 import javax.swing.JFrame;
 
 import Entities.Entity;
+import Entities.Alives.Enemy;
 import Entities.Alives.Player;
 import Processor.Controller;
 import Processor.Spritesheet;
@@ -15,15 +16,17 @@ import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.awt.BorderLayout;
 
-public class App extends Canvas implements Runnable{
 
+public class App extends Canvas implements Runnable{
+    public static Random random;
     private Thread thread;
     public static JFrame window;
     private boolean isRunning = false;
-    public static final int WIDTH = 240;
-    public static final int HEIGHT = 160;
+    public static final int WIDTH = 340;
+    public static final int HEIGHT = 260;
     public static final int SCALE = 3;
 
     private BufferedImage image;
@@ -33,6 +36,7 @@ public class App extends Canvas implements Runnable{
 
     public static World world;
     public static List<Entity> entities;
+    public static List<Enemy> enemies;
     public static Player player;
 
     public App(){
@@ -77,9 +81,11 @@ public class App extends Canvas implements Runnable{
    
 
     public void configInit(){
+        random = new Random();
         spritesheet = new Spritesheet("/sprites.png");
         image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
         entities = new ArrayList<Entity>();
+        enemies = new ArrayList<Enemy>();
         player = new Player(0, 0, 32, 32, spritesheet.getSprite(64, 0, 32, 32), controller);
         entities.add(player);
         world = new World("/map.png");

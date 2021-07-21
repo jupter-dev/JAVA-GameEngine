@@ -3,6 +3,7 @@ package Entities.Alives;
 import Entities.Entity;
 import java.awt.image.BufferedImage;
 import Processor.Controller;
+
 import java.awt.Graphics;
 import Main.App;
 import Processor.Camera;
@@ -10,16 +11,21 @@ import Terrain.World;
 
 public class Player extends Entity{
 
+    //Processos
     private Controller input;
     private String side = "R";
     private int camTime = 0;
 
+    //Animação
     private BufferedImage[] ARight;
     private BufferedImage[] ALeft;
-    private int speed = 2;
 
     private int frames = 0, maxFrames = 20, index = 0;
     private int camFrames = 0;
+
+    //Atributos
+    private int speed = 2;
+    public int life = 50;
     
     public Player(int x, int y, int w, int h, BufferedImage sprite, Controller input){
         super(x, y, w, h, sprite);
@@ -36,19 +42,9 @@ public class Player extends Entity{
 
 
     public void tick(){
-        if(input.up.down) y-=speed;
-        if(input.down.down) y+=speed;
-        if(input.right.down) x+=speed;
-        if(input.left.down)x-=speed;
+        controller();
         camera();
-        frames++;
-        if(frames == maxFrames){
-            frames = 0;
-            index ++;
-            if(index >= ALeft.length){
-                index = 0;
-            }
-        }
+        animation();
     }
 
     public void render(Graphics g){
@@ -59,6 +55,29 @@ public class Player extends Entity{
         }
     }
 
+    public void controller(){
+        if(input.up.down && World.freeWay(x, y-speed)){
+            y-=speed;
+        }else if(input.down.down && World.freeWay(x, y+speed)){
+            y+=speed;
+        } 
+        if(input.right.down && World.freeWay(x+speed, y)){
+            x+=speed;
+        }else if(input.left.down && World.freeWay(x-speed, y)){
+            x-=speed;
+        }
+    }
+
+    public void animation(){
+        frames++;
+        if(frames == maxFrames){
+            frames = 0;
+            index ++;
+            if(index >= ALeft.length){
+                index = 0;
+            }
+        }
+    }
 
     public void camera(){
               
