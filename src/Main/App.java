@@ -6,6 +6,7 @@ import Entities.Alives.Enemy;
 import Entities.Alives.Player;
 import Processor.Controller;
 import Processor.Spritesheet;
+import Processor.UI;
 import Terrain.World;
 
 import java.awt.Dimension;
@@ -38,6 +39,7 @@ public class App extends Canvas implements Runnable{
     public static List<Entity> entities;
     public static List<Enemy> enemies;
     public static Player player;
+    public UI ui;
 
     public App(){
         configInit();
@@ -82,6 +84,7 @@ public class App extends Canvas implements Runnable{
 
     public void configInit(){
         random = new Random();
+        ui = new UI();
         spritesheet = new Spritesheet("/sprites.png");
         image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
         entities = new ArrayList<Entity>();
@@ -131,6 +134,7 @@ public class App extends Canvas implements Runnable{
             Entity entity = entities.get(i);
             entity.render(g);
         }
+        ui.render(g);
     }
 
     @Override

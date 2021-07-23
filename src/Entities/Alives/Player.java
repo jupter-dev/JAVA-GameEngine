@@ -1,6 +1,8 @@
 package Entities.Alives;
 
 import Entities.Entity;
+import Entities.Collectables.Gem;
+
 import java.awt.image.BufferedImage;
 import Processor.Controller;
 
@@ -25,7 +27,7 @@ public class Player extends Entity{
 
     //Atributos
     private int speed = 2;
-    public int life = 50;
+    public double life = 50, lifemax = 50;
     
     public Player(int x, int y, int w, int h, BufferedImage sprite, Controller input){
         super(x, y, w, h, sprite);
@@ -45,6 +47,7 @@ public class Player extends Entity{
         controller();
         camera();
         animation();
+        items();
     }
 
     public void render(Graphics g){
@@ -52,6 +55,24 @@ public class Player extends Entity{
             g.drawImage(ARight[index], this.getX() - Camera.x, this.getY() - Camera.y, null);
         }else{
             g.drawImage(ALeft[index],  this.getX() - Camera.x, this.getY() - Camera.y, null);
+        }
+    }
+
+
+
+    public void items(){
+        for(int i = 0; i < App.entities.size(); i++){
+            Entity e = App.entities.get(i);
+            if(e instanceof Gem){
+                if(Entity.Colliding(this,e)){
+                    life += 5;
+                    if(life >= lifemax)
+                        life = lifemax;
+                    
+                    App.entities.remove(i);
+                    return;
+                }
+            }
         }
     }
 

@@ -1,20 +1,22 @@
 package Entities.Alives;
 
 import java.awt.image.BufferedImage;
-
 import Entities.Entity;
 import Main.App;
 import Processor.Camera;
 import Terrain.World;
+import Terrain.IA.AAstar;
+import Terrain.IA.PAstar;
+
 import java.awt.Rectangle;
-import java.awt.Color;
+//import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.image.BufferedImage;
+
 
 public class Enemy extends Entity{
 
     private int speed = 1;
-    private int mx = 11, my = 12, mw = 10, mh = 8;
+    //private int maskx = 11, masky = 12, maskw = 10, maskh = 8;
     private int frames = 0, maxFrames = 20, index = 0;
     private BufferedImage[] Animation;
 
@@ -27,19 +29,21 @@ public class Enemy extends Entity{
     }
 
     public void tick(){
+        maskx = 11; masky = 12; maskw = 10; maskh = 8;
             moviment();
             animation();
+            //Astar();
     }
 
     public void render(Graphics g){
-        super.render(g);
-        g.setColor(Color.black);
+        //super.render(g);
         g.drawImage(Animation[index], x-Camera.x, y-Camera.y, null);
         //g.fillRect((x+mx)-Camera.x, (y+my)-Camera.y, mw,mh);
     }
 
 
     public void moviment(){
+        
         if(isCollidingPlayer() == false){
             if((int)x > App.player.getX() && World.freeWay(x-speed, y) && !isColliding(x-speed, y)){
                 x-=speed;
@@ -61,27 +65,26 @@ public class Enemy extends Entity{
                 System.out.println("Vida "+ App.player.life);
             }
         }
+        
     }
 
-    public boolean isColliding(int xnext, int ynext){
-        Rectangle thisEnemy = new Rectangle(xnext+mx, ynext+my, mw, mh);
-        for(int i = 0; i < App.enemies.size(); i++){
-            Enemy e = App.enemies.get(i);
-            if(e == this){
-                continue;
-            }
-            Rectangle touchEnemy = new Rectangle(e.getX()+mx, e.getY()+my, mw, mh);
-            if(thisEnemy.intersects(touchEnemy)){
-                return true;
-            }
+
+    public void Astar(){
+        if(path == null || path.size() == 0){
+            PAstar start = new PAstar((int)(x/32), (int)(y/32));
+            PAstar end = new PAstar((int)(App.player.getX()/32), (int)(App.player.getY()/32));
+            path = AAstar.findPath(App.world, start, end);
         }
-
-        return false;
+        if(App.random.nextInt(100)< 80){
+            findPath(path);
+        }
+        
     }
+
 
     public boolean isCollidingPlayer(){
-        Rectangle thisEnemy = new Rectangle(x+mx, y+my, mw,mh);
-        Rectangle player = new Rectangle(App.player.getX()+mx, App.player.getY()+my, mw, mh);
+        Rectangle thisEnemy = new Rectangle(x+maskx, y+masky, maskw,maskh);
+        Rectangle player = new Rectangle(App.player.getX()+maskx, App.player.getY()+masky, maskw, maskh);
 
         return thisEnemy.intersects(player);
     }

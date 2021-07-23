@@ -59,7 +59,9 @@ public class World {
                         App.entities.add(enemy);
                     }else if(currentPixel == 0xFF00FF00){
                         //GEM
-                        App.entities.add(new Gem(tx, ty, TILE_SIZE, TILE_SIZE, Entity.GEMS));
+                        Entity gem = new Gem(tx, ty, TILE_SIZE, TILE_SIZE, Entity.GEMS);
+                        gem.setMask(11,12,10,8);
+                        App.entities.add(gem);
                     }
                 }
             }
