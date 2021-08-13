@@ -2,9 +2,9 @@ package Terrain;
 
 import java.awt.image.BufferedImage;
 import java.awt.Graphics;
-import Processor.Camera;
 
 import Main.App;
+import Processor.Visual.Camera;
 
 public class Tile {
     private BufferedImage tile;

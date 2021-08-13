@@ -1,4 +1,4 @@
-package Processor;
+package Processor.Controllers;
 
 
 
@@ -43,7 +43,8 @@ public class Controller implements KeyListener {
 	public Key down = new Key();
 	public Key left = new Key();
 	public Key right = new Key();
-	public Key cam = new Key();
+	public Key enter = new Key();
+	public Key esc = new Key();
 	
 	public void releaseAll() {
 		for (int i = 0; i < keys.size(); i++) {
@@ -59,6 +60,9 @@ public class Controller implements KeyListener {
 
 	public Controller(App game) {
 		game.addKeyListener(this);
+	}
+
+    public Controller() {
 	}
 
 	public void keyPressed(KeyEvent ke) {
@@ -78,8 +82,9 @@ public class Controller implements KeyListener {
 		if (ke.getKeyCode() == KeyEvent.VK_DOWN) down.toggle(pressed);
 		if (ke.getKeyCode() == KeyEvent.VK_LEFT) left.toggle(pressed);
 		if (ke.getKeyCode() == KeyEvent.VK_RIGHT) right.toggle(pressed);
-		if (ke.getKeyCode() == KeyEvent.VK_SPACE) cam.toggle(pressed);
-	}
+		if (ke.getKeyCode() == KeyEvent.VK_ENTER) enter.toggle(pressed);
+		if (ke.getKeyCode() == KeyEvent.VK_ESCAPE) esc.toggle(pressed);
+		}
 
 	public void keyTyped(KeyEvent ke) {
 		//Tem que deixar vazio, se não da erro no implements

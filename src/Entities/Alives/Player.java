@@ -2,13 +2,15 @@ package Entities.Alives;
 
 import Entities.Entity;
 import Entities.Collectables.Gem;
+import Entities.Throw.Spittle;
 
 import java.awt.image.BufferedImage;
-import Processor.Controller;
+
+import Processor.Controllers.Controller;
+import Processor.Visual.Camera;
 
 import java.awt.Graphics;
 import Main.App;
-import Processor.Camera;
 import Terrain.World;
 
 public class Player extends Entity{
@@ -17,17 +19,22 @@ public class Player extends Entity{
     private Controller input;
     private String side = "R";
     private int camTime = 0;
+    public boolean shoot = false;
+    public double mx,my;
 
     //Animação
     private BufferedImage[] ARight;
     private BufferedImage[] ALeft;
+    private BufferedImage playerDamage;
 
     private int frames = 0, maxFrames = 20, index = 0;
     private int camFrames = 0;
+    private int damageFrames = 0;
 
     //Atributos
     private int speed = 2;
-    public double life = 50, lifemax = 50;
+    public double life = 5, lifemax = 10;
+    public boolean damaged = false;
     
     public Player(int x, int y, int w, int h, BufferedImage sprite, Controller input){
         super(x, y, w, h, sprite);
@@ -35,7 +42,7 @@ public class Player extends Entity{
 
         ARight = new BufferedImage[3];
         ALeft = new BufferedImage[3];
-
+        playerDamage = App.spritesheet.getSprite(0, 64, 32, 32);
         for(int i = 0; i < ALeft.length; i++){
             ARight[i] = App.spritesheet.getSprite(32*i, 0, 32, 32);
             ALeft[i] = App.spritesheet.getSprite(32*i, 0, 32, 32);
@@ -44,23 +51,44 @@ public class Player extends Entity{
 
 
     public void tick(){
+        depth = 0;
+        actions();
         controller();
         camera();
         animation();
-        items();
+        itemsColliding();
     }
 
     public void render(Graphics g){
-        if(side == "R"){
-            g.drawImage(ARight[index], this.getX() - Camera.x, this.getY() - Camera.y, null);
+        if(!damaged){
+            if(side == "R"){
+                g.drawImage(ARight[index], this.getX() - Camera.x, this.getY() - Camera.y, null);
+            }else{
+                g.drawImage(ALeft[index],  this.getX() - Camera.x, this.getY() - Camera.y, null);
+            }
         }else{
-            g.drawImage(ALeft[index],  this.getX() - Camera.x, this.getY() - Camera.y, null);
+            g.drawImage(playerDamage, this.getX() - Camera.x, this.getY() - Camera.y, null);
+        }
+        
+    }
+
+    public void actions(){
+        if(life <= 0){
+            App.gameState = "GAMEOVER";
+        }
+        if(shoot){
+            shoot = false;
+            double angle = Math.atan2(my - (this.getY() +8 - Camera.y), mx - (this.getX() +8 - Camera.x));
+            double dx = Math.cos(angle);
+            double dy = Math.sin(angle);
+            int px = 10;
+            int py = 10;
+            Spittle spittle = new Spittle(this.getX()+px, this.getY()+py, 10, 10, null, dx, dy);
+            App.spittle.add(spittle);
         }
     }
 
-
-
-    public void items(){
+    public void itemsColliding(){
         for(int i = 0; i < App.entities.size(); i++){
             Entity e = App.entities.get(i);
             if(e instanceof Gem){
@@ -96,6 +124,13 @@ public class Player extends Entity{
             index ++;
             if(index >= ALeft.length){
                 index = 0;
+            }
+        }
+        if(damaged){
+            damageFrames++;
+            if(damageFrames == 8){
+                damageFrames = 0;
+                damaged = false;
             }
         }
     }

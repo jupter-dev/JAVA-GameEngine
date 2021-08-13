@@ -1,4 +1,4 @@
-package Processor;
+package Processor.Visual;
 
 public class Camera {
     public static int x = 0;

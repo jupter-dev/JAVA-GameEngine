@@ -1,4 +1,4 @@
-package Processor;
+package Processor.Visual;
 import java.awt.Color;
 import java.awt.Graphics;
 

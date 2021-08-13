@@ -1,11 +1,12 @@
 package Entities;
 
 import java.awt.image.BufferedImage;
+import java.util.Comparator;
 import java.util.List;
 
 import Entities.Alives.Enemy;
 import Main.App;
-import Processor.Camera;
+import Processor.Visual.Camera;
 import Terrain.IA.MAstar;
 import Terrain.IA.PAstar;
 
@@ -34,6 +35,9 @@ public class Entity {
 
     //IA
     protected List<MAstar> path;
+
+    //Profundidade
+    public int depth;
 
     public Entity(int x, int y, int w, int h, BufferedImage sprite){
         this.x = x;
@@ -79,6 +83,10 @@ public class Entity {
         this.maskh = maskh;
     }
 
+    public double presense(int x1, int y1, int x2, int y2){
+        return Math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
+    }
+
     public boolean isColliding(int xnext, int ynext){
         Rectangle thisEnemy = new Rectangle(xnext+maskx, ynext+masky, maskw, maskh);
         for(int i = 0; i < App.enemies.size(); i++){
@@ -102,9 +110,18 @@ public class Entity {
         return e1Mask.intersects(e2Mask);
     }
 
+    public static Comparator<Entity> nodeSorter = new Comparator<Entity>(){
+        @Override
+        public int compare(Entity n0, Entity n1){
+            if(n1.depth < n0.depth)
+                return +1;
+            if(n1.depth > n0.depth)
+                return -1;
+            return 0;
+        }
+    };
 
-
-    public void tick(){}
+    public void tick(){}    
 
     public void findPath(List<MAstar> path){
         int TILE_SIZE = 32;

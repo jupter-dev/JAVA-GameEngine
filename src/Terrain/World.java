@@ -7,9 +7,9 @@ import Entities.Entity;
 import Entities.Alives.Enemy;
 import Entities.Collectables.Gem;
 import Main.App;
+import Processor.Visual.Camera;
 import Terrain.Type.Floor;
 import Terrain.Type.Wall;
-import Processor.Camera;
 
 import java.awt.Graphics;
 
@@ -114,6 +114,30 @@ public class World {
                  tiles[xlt + (ylt*World.WIDTH)] instanceof Wall
         );
     }
+
+    public static boolean isCollisionDinamics(int xnext, int ynext, int width, int height) {
+		int x1 = (xnext + 2) / TILE_SIZE;
+		int y1 = (ynext + 7) / TILE_SIZE;
+		
+		int x2 = (xnext + width - 3) / TILE_SIZE;
+		int y2 = ynext / TILE_SIZE;
+		
+		int x3 = xnext / TILE_SIZE;
+		int y3 = (ynext + height - 2) / TILE_SIZE;
+		
+		int x4 = (xnext + width - 3) / TILE_SIZE;
+		int y4 = (ynext + height - 2) / TILE_SIZE;
+		
+		int out = 20; 
+		if(x4 + (y4*World.WIDTH) < out || x2 + (y2*World.WIDTH) < out || x3 + (y3*World.WIDTH) < out || x4 + (y4*World.WIDTH) < out) {
+			return false;
+		}
+		
+		return !((tiles[x1 + (y1*World.WIDTH)] instanceof Wall) ||
+				(tiles[x2 + (y2*World.WIDTH)] instanceof Wall) ||
+				(tiles[x3 + (y3*World.WIDTH)] instanceof Wall) ||
+				(tiles[x4 + (y4*World.WIDTH)] instanceof Wall));
+	}
 
 
 

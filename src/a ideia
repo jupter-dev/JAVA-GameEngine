@@ -1,11 +1,11 @@
 - Gameloop - OK
 - Sprite teste - OK
 - Movimentação - OK
-- Blocos
-- Colisão
+- Blocos - OK
+- Colisão - OK
 - Camera - OK
+- I.A do inimigo - OK
 - Interações
-- I.A do inimigo (De momento só seguir)
 
 Boss names:
  --Cappueyes (Cor de cappucino com vários olhos)
