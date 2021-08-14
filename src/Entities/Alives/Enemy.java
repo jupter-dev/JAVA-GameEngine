@@ -5,12 +5,14 @@ import Entities.Entity;
 import Main.App;
 import Processor.Sound;
 import Processor.Visual.Camera;
+import Processor.Visual.Effects.Particles;
 import Terrain.World;
 import Terrain.IA.AAstar;
 import Terrain.IA.PAstar;
 
 import java.awt.Rectangle;
 import java.awt.Graphics;
+import java.awt.Color;
 
 
 public class Enemy extends Entity{
@@ -74,6 +76,8 @@ public class Enemy extends Entity{
            }
         }
         if(life <= 0){
+            Color colour = new Color(225,0,0);
+            Particles.generateParticles(50, this.x, this.y, colour);
             Sound.EnemyDead.play();
             destroyThis();
         }

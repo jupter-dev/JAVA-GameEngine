@@ -4,14 +4,15 @@ import javax.swing.JFrame;
 
 import Entities.Entity;
 import Entities.Alives.Enemy;
+import Entities.Alives.Npc;
 import Entities.Throw.Spittle;
 import Entities.Alives.Player;
 import Processor.Controllers.Controller;
 import Processor.Controllers.Mouse;
 import Processor.Imports.Spritesheet;
-import Processor.States.Menu;
-import Processor.States.Pause;
 import Processor.Visual.UI;
+import Processor.Visual.States.Menu;
+import Processor.Visual.States.Pause;
 import Terrain.World;
 
 import java.awt.Dimension;
@@ -60,6 +61,7 @@ public class App extends Canvas implements Runnable{
     public static List<Enemy> enemies;
     public static List<Spittle> spittle;
     public static Player player;
+    public Npc npc;
     public UI ui;
 
     public InputStream stream = ClassLoader.getSystemClassLoader().getResourceAsStream("pixel.ttf");
@@ -205,6 +207,8 @@ public class App extends Canvas implements Runnable{
         world = new World("/map1.png");
         menu = new Menu(controller);
         pause = new Pause(controller);
+        npc = new Npc(5*32, 2*32, 32,32, spritesheet.getSprite(32*2, 32, 32, 32));
+        entities.add(npc);
     }
     
     public void restart(){

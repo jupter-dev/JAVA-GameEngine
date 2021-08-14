@@ -3,6 +3,7 @@ package Entities.Throw;
 import Entities.Entity;
 import Main.App;
 import Processor.Visual.Camera;
+import Processor.Visual.Effects.Particles;
 import Terrain.World;
 
 import java.awt.Color;
@@ -29,6 +30,8 @@ public class Spittle extends Entity{
             x+=dx*speed;
             y+=dy*speed;
         }else {
+            Color cor = new Color(0,225,0);
+			Particles.generateParticles(20, (int)x, (int)y, cor);
             App.spittle.remove(this);
             return;
         }
@@ -37,6 +40,9 @@ public class Spittle extends Entity{
         if(curLife == life){
             App.spittle.remove(this);
             return;
+        }else{
+            Color cor = new Color(0,225,0);
+			Particles.generateParticles(App.random.nextInt(2)+1, (int)x, (int)y, cor);
         }
     }
     

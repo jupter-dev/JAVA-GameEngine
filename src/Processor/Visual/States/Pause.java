@@ -1,4 +1,4 @@
-package Processor.States;
+package Processor.Visual.States;
 
 import Processor.Controllers.Controller;
 import Processor.Imports.SaveLoad;
